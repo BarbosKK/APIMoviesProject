@@ -1,0 +1,8 @@
+./vscode
+./idea
+node_modules/
+<<<<<<< HEAD
+.env
+=======
+.env
+>>>>>>> origin/main

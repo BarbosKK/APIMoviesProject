@@ -1,0 +1,131 @@
+openapi: 3.0.2
+info:
+    title: APIMoviesProject
+    version: 1.0.0
+    description: APIMoviesProject
+paths:
+    /movies:
+        get:
+            tags:
+                - Movies
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                List of movies:
+                                    value: |-
+                                        [
+                                            "Shawshank Redemption"'
+                                        ]
+                    description: Returns a list of movies
+            summary: Return a list of movies
+            description: Returns a list of movies in API
+        post:
+            requestBody:
+                description: Data of game that the user wants to add
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Movie'
+                        examples:
+                            Movie:
+                                value:
+                                    -
+                                        GameName: 28f1i
+                                        ReleaseDateEU: '2018-01-17'
+                                        ReviewScore: '72'
+                required: true
+            tags:
+                - Movies
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Add Movie:
+                                    value:
+                                        GameID: 4
+                                        GameName: 'Elder Scrolls 3: Morrowind'
+                                        ReleaseDateEU: 2001.01.02
+                                        ReviewScore: '8'
+                    description: |
+                        Return code 201 to user, if creation of a new movie was successful
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters missing
+                    description: Returns error if user did not input one or multiple parameters
+            description: Adds a new movie into the array
+    '/movies/{id}':
+        get:
+            tags:
+                - details
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                'Movie ID''s ':
+                                    value:
+                                        id: 1
+                                        name: Witcher 3
+                                        price: 70
+                    description: Returns a list of movie ID's
+                '404':
+                    $ref: '#/components/responses/404'
+            summary: Get a list of movie ID's
+            description: Returns full details of a movie
+        parameters:
+            -
+                name: id
+                in: path
+                required: true
+components:
+    schemas:
+        error:
+            title: Root Type for error
+            description: ''
+            type: object
+            properties:
+                error:
+                    type: string
+            example:
+                error: Error message.
+        Movie:
+            title: Root Type for Movie
+            description: Example of a valid Movie
+            type: object
+            properties:
+                GameName:
+                    type: string
+                ReleaseDateEU:
+                    format: date
+                    type: string
+                ReviewScore:
+                    type: string
+            example:
+                GameName: 'Elder Scrolls 3: Morrowind'
+                ReleaseDateEU: 2001.01.02
+                ReviewScore: '8'
+    responses:
+        '404':
+            description: 404 Not Found
